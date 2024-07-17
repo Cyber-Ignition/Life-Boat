@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import { themeSettings } from "theme";
+import Medicine from "scenes/medicine";
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
           <Route path="/blood-donation" element={<BloodDonation/>} />
           <Route path="/medical-services" element={<MedicalServices/>} />
           <Route path="/buy-medicines" element={<BuyMeds/>} />
+          <Route path="/medicine" element={<Medicine/>} />
         </Routes>
       </ThemeProvider>
       </BrowserRouter>
