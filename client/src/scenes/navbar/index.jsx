@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Box, IconButton, InputBase, Typography, Select, MenuItem, FormControl, useTheme, useMediaQuery } from "@mui/material";
 import { Search, Message, DarkMode, LightMode, Notifications, Menu, Close } from "@mui/icons-material";
 import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
@@ -7,8 +7,9 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Tooltip from '@mui/material/Tooltip';
 import Button from "@mui/material/Button";
 import InputLabel from "@mui/material/InputLabel";
+import { AsyncPaginate } from "react-select-async-paginate"
 import { useDispatch, useSelector } from "react-redux";
-import { setMode, setLogout } from "state";
+import { setMode, setLogout, setMedName } from "state";
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "components/FlexBetween";
 import logo from "components/images/logo.png";
@@ -16,12 +17,13 @@ import dlogo from "components/images/dlogo.png";
 
 const Navbar = () => {
     const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
+    const [search, setSearch] = useState(null);
+    const [drugOptions, setDrugOptions] = useState([]);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const user = useSelector((state) => state.user);
-    console.log(user);
     const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
-
+    console.log(search);
     const theme = useTheme();
     const neutralLight = theme.palette.neutral.light;
     const dark = theme.palette.neutral.dark;
@@ -29,18 +31,79 @@ const Navbar = () => {
     const primaryLight = theme.palette.primary.light;
     const alt = theme.palette.background.alt;
 
+    const loadOptions = async (inputValue) => {
+        const response = await fetch(`https://api.fda.gov/drug/drugsfda.json?search=${inputValue}&limit=4`)
+      const response_1 = await response.json()
+      return {
+        options: response_1.results.map((result) => {
+        console.log(result);
+          return {
+            label: result.products[0].active_ingredients[0].name,
+            strength: result.products[0].active_ingredients[0].strength,
+            brand: result.products[0].brand_name,
+            dose: result.products[0].dosage_form,
+            route: result.products[0].route,
+            sponsor: result.sponsor_name,
+          }
+        }),
+      }
+      };
+
+      const customStyles = {
+        control: (defaultStyles) => ({
+            ...defaultStyles,
+            backgroundColor: theme.palette.mode === "light" ? "rgb(255, 255, 255)" : alt
+          
+        }),
+        placeholder: (defaultStyles) => ({
+            ...defaultStyles,
+            color: theme.palette.mode === "light" ? "black" : "white",
+            zIndex: 100,
+            position: "relative"
+        }),
+        input: (defaultStyles) => ({
+            ...defaultStyles,
+            width: "390px",
+            color: "black",
+        }),
+        singleValue: (defaultStyles) => ({
+            ...defaultStyles,
+            color: "black",
+            zIndex: 1,
+            position: "fixed"
+        }),
+        option: (defaultStyles, state) => ({
+            ...defaultStyles,
+            backgroundColor: "rgb(255, 255, 255)",
+            color: "black",
+            "&:hover":{
+                backgroundColor: "#29bfff"
+            },
+        }),
+        
+      }
+
+    const handleOnChange = (searchData) => {
+        setSearch(searchData);
+        dispatch(setMedName({medname: searchData}));
+        navigate("/medicine");
+    }
 
     return (
         <FlexBetween padding="0.75rem 3%" backgroundColor={alt}>
             <FlexBetween gap="1.75rem">
                 <img src={theme.palette.mode === "dark" ? dlogo : logo} width={140} onClick={() => navigate("/")} style={{cursor: "pointer"}}/>
                 {isNonMobileScreens && (
-                    <FlexBetween backgroundColor={neutralLight} borderRadius="9px" gap="3rem" padding="0.1rem 1.5rem">
-                        <InputBase placeholder="Search..."/>
-                        <IconButton>
-                            <Search/>
-                        </IconButton>
-                    </FlexBetween>
+                    <Box>
+                        <AsyncPaginate
+                        styles={customStyles}
+                        placeholder="Search for Medicines/Healthcare products/Pharmaceuticals"
+                        debounceTimeout={600}
+                        value={search}
+                        onChange={handleOnChange}
+                        loadOptions={loadOptions}
+                        />
+                    </Box>
                 )}
             </FlexBetween>
 
