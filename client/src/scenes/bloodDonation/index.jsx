@@ -3,9 +3,7 @@ import React from 'react'
 
 const BloodDonation = () => {
   return (
-    <Typography>
-        BLOOD DONATION SCREEN
-    </Typography>
+    <h1 style={{color: "orange"}}>this is a blood donation page</h1>
   )
 }
 

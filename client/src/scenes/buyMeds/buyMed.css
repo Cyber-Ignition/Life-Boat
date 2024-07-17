@@ -1,0 +1,75 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: Leelawadee UI;
+}
+.head-div{
+    background-image: url(./pictures/head-div-bgm.png);
+    background-size: 100% 25rem;
+    width: 100%;
+    height: 40%;
+    padding-bottom: 8%;
+    position: relative;
+}
+.head-div-cover{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.3);
+}
+.head-msg{
+    font-size: 4rem;
+    font-weight: lighter;
+    position: absolute;
+    top:10%;
+    left: 2%;
+    color: white;
+}
+.search-med-box{
+    position: absolute;
+    right: 18%;
+    top: 30%;
+    width: 30%;
+    height: 2.5rem;
+    outline: none;
+    border: none;
+    border: 2px solid rgba(0,0,0,0.2);
+    border-radius: 10px;
+    padding: 1%;
+    font-size: 16px;
+}
+.searchBtn{
+    position: absolute;
+    top: 30%;
+    right: 12%;
+    border: none;
+    outline: none;
+    padding: 10px 20px 10px 20px;
+    background: rgb(6, 128, 45);
+    font-size: 16px;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.del-text{
+    position: absolute;
+    right: 30%;
+    font-size: 16px;
+    top: 52%;
+    color: white;
+}
+.midpage-head{
+    position: relative;
+    margin-top: 2%;
+    margin-left: 3%;
+    font-weight: lighter;
+    font-size: 25px;
+}
+.midpage-head::before{
+    position: absolute;
+    content: '';
+    width: 5px;
+    height: 100%;
+    background: rgb(2, 172, 2);
+    left: -15px;
+}
