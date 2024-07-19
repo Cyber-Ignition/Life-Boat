@@ -13,6 +13,7 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import { themeSettings } from "theme";
 import Medicine from "scenes/medicine";
+import MedicinesCart from "scenes/medicinesCart";
 
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
           <Route path="/medical-services" element={<MedicalServices/>} />
           <Route path="/buy-medicines" element={<BuyMeds/>} />
           <Route path="/medicine" element={<Medicine/>} />
+          <Route path="/medicines-cart" element={<MedicinesCart/>} />
         </Routes>
       </ThemeProvider>
       </BrowserRouter>

@@ -72,9 +72,9 @@ const UploadPrescription = () => {
                 height="40%"
                 >
                     <Box backgroundColor={theme.palette.background.alt} m="1rem" p="1rem" border={`1px solid ${theme.palette.mode === "dark" ? "rgba(255, 255, 255, 0.2)" : "rgba(0, 0, 0, 0.1)"}`}>
-                        <Typography fontWeight="500" variant="h5" display="flex" flexDirection="column">
-                            <p style={{marginBlockEnd: "0rem"}}>Continue to upload images of your prescription below</p>
-                            <p style={{fontSize: "0.75rem", fontWeight: "100", marginBlockEnd: "0rem"}}>(Accepted Formats: JPG/JPEG/PNG)</p>
+                        <Typography display="flex" flexDirection="column">
+                            <Typography fontWeight={500} variant='h5' marginY={2}>Continue to upload images of your prescription below</Typography>
+                            <Typography style={{fontSize: "0.75rem", fontWeight: "100"}}>(Accepted Formats: JPG/JPEG/PNG)</Typography>
                         </Typography>
                     </Box>
                 <Formik
@@ -130,7 +130,7 @@ const UploadPrescription = () => {
                                     <Box>
                                     <CloudUploadIcon style={{fontSize: "2rem", marginLeft: "1rem", marginTop: "1rem"}}/>
                                     <Box display="flex">
-                                    <p style={{fontSize: "1rem", marginLeft: "1rem", marginBlockStart: "0.5rem"}}>Upload Prescription Here</p>
+                                    <Typography style={{fontSize: "1rem", marginLeft: "1rem", marginBottom: "1rem", marginTop: "0.5rem"}}>Upload Prescription Here</Typography>
                                     <ArrowForwardIcon style={{marginTop: "0.5rem", marginLeft: "1rem"}}/>
                                     </Box>
                                     </Box>
@@ -175,7 +175,7 @@ const UploadPrescription = () => {
                                     <Box>
                                     <CloudUploadIcon style={{fontSize: "2rem", marginLeft: "1rem", marginTop: "1rem"}}/>
                                     <Box display="flex">
-                                    <p style={{fontSize: "1rem", marginLeft: "1rem", marginBlockStart: "0.5rem"}}>Upload E-Prescription</p>
+                                    <Typography style={{fontSize: "1rem", marginLeft: "1rem", marginBottom: "1rem", marginTop: "0.5rem"}}>Upload E-Prescription</Typography>
                                     <ArrowForwardIcon style={{marginTop: "0.5rem", marginLeft: "1rem"}}/>
                                     </Box>
                                     </Box>

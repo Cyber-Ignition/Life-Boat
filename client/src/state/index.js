@@ -4,7 +4,8 @@ const initialState = {
     mode: "light",
     user: null,
     token: null,
-    medname: null
+    medname: null,
+    cartitems: []
 }
 
 export const authSlice = createSlice({
@@ -24,10 +25,21 @@ export const authSlice = createSlice({
         },
         setMedName: (state, action) => {
             state.medname = action.payload.medname;
+        },
+        setCartItem: (state, action) => {
+            state.cartitems.push(action.payload);
+        },
+        setCartItemRefresh: (state, action) => {
+            state.cartitems = [];
+        },
+        setCartItemRemove: (state, action) => {
+            const idx = state.cartitems.findIndex((item) => item === action.payload);
+            console.log(idx);
+            state.cartitems.splice(idx, 1);
         }
     }
 })
 
-export const { setMode, setLogin, setLogout, setMedName } =
+export const { setMode, setLogin, setLogout, setMedName, setCartItem, setCartItemRefresh, setCartItemRemove } =
   authSlice.actions;
 export default authSlice.reducer;

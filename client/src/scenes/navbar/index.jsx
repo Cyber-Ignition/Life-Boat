@@ -4,6 +4,7 @@ import { Search, Message, DarkMode, LightMode, Notifications, Menu, Close } from
 import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 import BloodtypeIcon from '@mui/icons-material/Bloodtype';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import LocalMallIcon from '@mui/icons-material/LocalMall';
 import Tooltip from '@mui/material/Tooltip';
 import Button from "@mui/material/Button";
 import InputLabel from "@mui/material/InputLabel";
@@ -64,11 +65,11 @@ const Navbar = () => {
         input: (defaultStyles) => ({
             ...defaultStyles,
             width: "390px",
-            color: "black",
+            color: theme.palette.mode === "light" ? "black" : "white",
         }),
         singleValue: (defaultStyles) => ({
             ...defaultStyles,
-            color: "black",
+            color: theme.palette.mode === "light" ? "black" : "white",
             zIndex: 1,
             position: "fixed"
         }),
@@ -76,6 +77,7 @@ const Navbar = () => {
             ...defaultStyles,
             backgroundColor: "rgb(255, 255, 255)",
             color: "black",
+            fontFamily: "Rubik, sans-serif",
             "&:hover":{
                 backgroundColor: "#29bfff"
             },
@@ -126,7 +128,10 @@ const Navbar = () => {
                         <Tooltip title="Doctor's Appointment"><MedicalServicesIcon sx={{ color: theme.palette.mode === "dark" ? "" : dark, fontSize: "25px" }} /></Tooltip>
                     </IconButton>
                     <IconButton onClick={() => navigate("/buy-medicines")}>
-                        <Tooltip title="Buy Medicines"><ShoppingCartIcon sx={{ color: theme.palette.mode === "dark" ? "" : dark, fontSize: "25px" }} /></Tooltip>
+                        <Tooltip title="Buy Medicines"><LocalMallIcon sx={{ color: theme.palette.mode === "dark" ? "" : dark, fontSize: "25px" }} /></Tooltip>
+                    </IconButton>
+                    <IconButton onClick={() => navigate("/medicines-cart")}>
+                        <Tooltip title="Medicines Cart"><ShoppingCartIcon sx={{ color: theme.palette.mode === "dark" ? "" : dark, fontSize: "25px" }} /></Tooltip>
                     </IconButton>
 
                     
