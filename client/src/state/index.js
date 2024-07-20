@@ -33,7 +33,7 @@ export const authSlice = createSlice({
             state.cartitems = [];
         },
         setCartItemRemove: (state, action) => {
-            const idx = state.cartitems.findIndex((item) => item === action.payload);
+            const idx = state.cartitems.findIndex((item) => item.name === action.payload);
             console.log(idx);
             state.cartitems.splice(idx, 1);
         }

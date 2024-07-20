@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { Typography, Box, useTheme, InputBase, IconButton, Button } from '@mui/material';
@@ -12,14 +12,18 @@ import FlexBetween from 'components/FlexBetween';
 import logo from "components/images/logo.png";
 import dlogo from "components/images/dlogo.png";
 import { setCartItem, setCartItemRemove } from 'state';
+import "./medicine.css"
 
 const _ = require('lodash');
 
 const Medicine = () => {
   const name = useSelector((state) => state.medname);
   const cartarr = useSelector((state) => state.cartitems);
+  const cartDrugs = [];
+  cartarr.map((obj) => cartDrugs.push(obj.name));
   const [displayFooter, setDisplayFooter] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [price, setPrice] = useState(String(Math.floor(Math.random()*1000)));
 
   const dispatch = useDispatch();
   const theme = useTheme();
@@ -28,8 +32,9 @@ const Medicine = () => {
   const [drugInfo, setDrugInfo] = useState(null);
   const drugQueryHalf = name.label.split(" ")[0].toLowerCase();
   const drugQueryFull = name.label.split(" ").join("").toLowerCase();
+  const drugQueryFullUnderscore = name.label.split(" ").join("_").toLowerCase();
   console.log(drugQueryFull);
-  const WIKI_URL = `https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exsentences=10&exlimit=2&exintro&titles=${drugQueryHalf}|${drugQueryFull}&explaintext=1&format=json&formatversion=2&origin=*`
+  const WIKI_URL = `https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exsentences=10&exlimit=3&exintro&titles=${drugQueryHalf}|${drugQueryFull}|${drugQueryFullUnderscore}&explaintext=1&format=json&formatversion=2&origin=*`
   console.log(drugInfo);
   const wikiConfig = {
     timeout: 6500 * 6500
@@ -41,15 +46,31 @@ const Medicine = () => {
   const drugDosage = _.startCase(name.dose.toLowerCase());
   const drugSponsor = _.startCase(name.sponsor.toLowerCase());
   const drugRoute = _.startCase(name.route.toLowerCase());
-  const drugAddedtoCart = cartarr.includes(drugTitle)
+  const drugAddedtoCart = cartDrugs.includes(drugTitle)
 
   async function getWikiResponse(url, config) {
     const res = await axios.get(url, config);
     return res;
   };
   getWikiResponse(WIKI_URL, wikiConfig).then(result => {
-    setDrugInfo(result.data.query.pages[0].extract || result.data.query.pages[1].extract)
+    setDrugInfo(result.data.query.pages[2]?.extract || result.data.query.pages[1]?.extract || result.data.query.pages[0].extract)
   });
+
+  const url = `https://pricer.p.rapidapi.com/str?q=${drugBrand}`;
+    const options = {
+        method: 'GET',
+        headers: {
+            'x-rapidapi-key': '',
+            'x-rapidapi-host': 'pricer.p.rapidapi.com'
+        }
+    };
+
+  /*useEffect(() => {
+    fetch(url, options)
+      .then(response => response.json())
+      .then(data => setPrice(data[0].price))
+    console.log(price);
+  }, []);*/
 
   return (
     <Box display="flex" flexDirection="column" minHeight="100vh">
@@ -68,13 +89,18 @@ const Medicine = () => {
         </FlexBetween>
       </Box>
       <Box p="1rem" display="flex" width="100%">
-        <Typography minWidth={1050} style={{ fontSize: "5rem" }}>
-          {drugTitle}
-        </Typography>
+        <Box display="flex">
+          <Typography display="flex" minWidth={1050} style={{ fontSize: "5rem" }}>
+            {drugTitle}
+            <Typography p={7.5} paddingBottom={0} paddingLeft={2} style={{fontSize: "1.375rem"}}>
+              {price}
+            </Typography>
+          </Typography>
+        </Box>
         <Box display="flex" flexDirection="column">
           <Button
             onClick={() => {
-              drugAddedtoCart ? setErrorMessage("This order has already been added") : dispatch(setCartItem(drugTitle))
+              drugAddedtoCart ? setErrorMessage("This order has already been added") : dispatch(setCartItem({name: drugTitle, price: price}))
             }}
             sx={{
               marginTop: "2rem",
@@ -108,7 +134,7 @@ const Medicine = () => {
               backgroundColor: "#e60f00",
               color: theme.palette.background.alt,
               "&:hover": {
-                backgroundColor: theme.palette.mode === "dark" ? "#001f91" : "#ffbab5",
+                backgroundColor: theme.palette.mode === "dark" ? "#910000" : "#ffbab5",
                 color: theme.palette.mode === "dark" ? "#fff" : "#000"
               }
             }}
@@ -136,11 +162,12 @@ const Medicine = () => {
         </Typography>
       </Box>
 
-      {drugAddedtoCart && displayFooter && <Box display="flex" alignSelf="center" position="fixed" bottom="0" width="90%" backgroundColor="white" boxShadow="5px 10px 10px 5px #000">
+      {drugAddedtoCart && displayFooter && <Box className="footer--box" display="flex" alignSelf="center" position="fixed" bottom="0" width="90%" backgroundColor={theme.palette.mode === "light" ? "white" : "black"}
+      border={theme.palette.mode === "light" ? "" : "1px solid #595959"} boxShadow= {theme.palette.mode === "light" ? "5px 10px 10px 5px #000" : "5px 10px 10px 10px #fff"}>
         <ShoppingCartCheckoutIcon style={{ fontSize: "1.5rem", marginTop: "3.5rem", marginLeft: "2rem" }} />
         <Typography m="2rem" p="1rem" width={850} style={{ fontWeight: "500", fontSize: "1rem" }}>
           {drugTitle} has been added to your cart successfully.
-          <CheckIcon style={{ fontSize: "1.5rem", marginLeft: "2rem", backgroundColor: "#00e35b" }} />
+          <CheckIcon style={{ fontSize: "1.5rem", marginLeft: "2rem", backgroundColor: theme.palette.mode === "dark" ? "#00c24d" : "#00e35b" }} />
         </Typography>
         <Button
           onClick={() => navigate("/medicines-cart")}
