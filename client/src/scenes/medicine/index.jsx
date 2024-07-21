@@ -7,7 +7,7 @@ import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import CloseIcon from '@mui/icons-material/Close';
 import { Search } from '@mui/icons-material';
 import CheckIcon from '@mui/icons-material/Check';
-import { Route, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import FlexBetween from 'components/FlexBetween';
 import logo from "components/images/logo.png";
 import dlogo from "components/images/dlogo.png";
@@ -23,22 +23,13 @@ const Medicine = () => {
   cartarr.map((obj) => cartDrugs.push(obj.name));
   const [displayFooter, setDisplayFooter] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
-  const [price, setPrice] = useState(String(Math.floor(Math.random()*1000)));
+  const [price, setPrice] = useState(null);
 
   const dispatch = useDispatch();
   const theme = useTheme();
   const neutralLight = theme.palette.neutral.light;
   const navigate = useNavigate();
   const [drugInfo, setDrugInfo] = useState(null);
-  const drugQueryHalf = name.label.split(" ")[0].toLowerCase();
-  const drugQueryFull = name.label.split(" ").join("").toLowerCase();
-  const drugQueryFullUnderscore = name.label.split(" ").join("_").toLowerCase();
-  console.log(drugQueryFull);
-  const WIKI_URL = `https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exsentences=10&exlimit=3&exintro&titles=${drugQueryHalf}|${drugQueryFull}|${drugQueryFullUnderscore}&explaintext=1&format=json&formatversion=2&origin=*`
-  console.log(drugInfo);
-  const wikiConfig = {
-    timeout: 6500 * 6500
-  };
 
   const drugTitle = _.startCase(name.label.toLowerCase());
   const strength = name.strength.toLowerCase();
@@ -52,11 +43,21 @@ const Medicine = () => {
     const res = await axios.get(url, config);
     return res;
   };
-  getWikiResponse(WIKI_URL, wikiConfig).then(result => {
-    setDrugInfo(result.data.query.pages[2]?.extract || result.data.query.pages[1]?.extract || result.data.query.pages[0].extract)
-  });
+  useEffect(() => {
+      const drugQueryHalf = name.label.split(" ")[0].toLowerCase();
+      const drugQueryFull = name.label.split(" ").join("").toLowerCase();
+      const drugQueryFullUnderscore = name.label.split(" ").join("_").toLowerCase();
+      const WIKI_URL = `https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exsentences=10&exlimit=3&exintro&titles=${drugQueryHalf}|${drugQueryFull}|${drugQueryFullUnderscore}&explaintext=1&format=json&formatversion=2&origin=*`
+      const wikiConfig = {
+        timeout: 6500 * 6500
+    };
+      getWikiResponse(WIKI_URL, wikiConfig).then(result => {
+      setDrugInfo(result.data.query.pages[2]?.extract || result.data.query.pages[1]?.extract || result.data.query.pages[0].extract);
+      setPrice(String(Math.floor(Math.random()*1000)));
+    })
+  }, []);
 
-  const url = `https://pricer.p.rapidapi.com/str?q=${drugBrand}`;
+  /*const url = `https://pricer.p.rapidapi.com/str?q=${drugBrand}`;
     const options = {
         method: 'GET',
         headers: {
@@ -65,7 +66,7 @@ const Medicine = () => {
         }
     };
 
-  /*useEffect(() => {
+  useEffect(() => {
     fetch(url, options)
       .then(response => response.json())
       .then(data => setPrice(data[0].price))
@@ -76,7 +77,7 @@ const Medicine = () => {
     <Box display="flex" flexDirection="column" minHeight="100vh">
       <Box width="100%" backgroundColor={theme.palette.background.alt} p="1rem 6%">
         <FlexBetween>
-          <img src={theme.palette.mode === "dark" ? dlogo : logo} width={170} onClick={() => navigate("/")} style={{ cursor: "pointer" }} />
+          <img src={theme.palette.mode === "dark" ? dlogo : logo} alt="lifeboat" width={170} onClick={() => navigate("/")} style={{ cursor: "pointer" }} />
           <FlexBetween backgroundColor={neutralLight} padding="0.1rem 1.5rem">
             <InputBase sx={{
               width: "900px",
@@ -104,7 +105,6 @@ const Medicine = () => {
             }}
             sx={{
               marginTop: "2rem",
-              p: "2rem 2rem",
               alignSelf: "flex-end",
               p: "1rem",
               width: drugAddedtoCart ? "210x" : "180px",
@@ -126,7 +126,6 @@ const Medicine = () => {
             onClick={() => dispatch(setCartItemRemove(drugTitle))}
             sx={{
               marginTop: "2rem",
-              p: "2rem 2rem",
               alignSelf: "flex-end",
               p: "1rem",
               width: "180px",
