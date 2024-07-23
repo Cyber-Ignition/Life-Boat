@@ -272,7 +272,7 @@ const UploadPrescription = () => {
                     Please upload an image to proceed.
                 </Typography>
                 }
-                {submitClicked ? Boolean(errors.pictures) ? setSubmitClicked(false) : null || Boolean(picturePath) || <Typography display="flex" marginLeft={2}>
+                {submitClicked ? Boolean(errors.pictures) ? setSubmitClicked(false) : null || Boolean(picturePath) || <Typography display="flex" marginLeft={2} marginTop={2}>
                     Uploading Image
                     <BarLoader
                         color="blue"
@@ -283,7 +283,7 @@ const UploadPrescription = () => {
                         data-testid="loader"
                     />
                     </Typography> : null}
-                {picturePath ? Boolean(imageText) || <Typography display="flex" marginLeft={2} marginBottom={2}>
+                {picturePath ? Boolean(imageText) || <Typography display="flex" marginLeft={2} marginBottom={2} marginTop={2}>
                     Extracting text from image
                     <BarLoader
                         color="blue"
@@ -294,7 +294,7 @@ const UploadPrescription = () => {
                         data-testid="loader"
                     />
                     </Typography> : null}
-                    {picturePath && <Box marginLeft="2rem" display="flex">
+                    {picturePath && <Box marginLeft="2rem" display="flex" marginTop={2}>
                         <img src = {picturePath} width="200px"/>
                         <Box display="flex" flexDirection="column">
                         {drugsDetected.length > 0 && <Typography p={4} style={{fontSize: "1rem"}}>
