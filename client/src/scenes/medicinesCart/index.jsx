@@ -23,8 +23,8 @@ const MedicinesCart = () => {
     const navigate = useNavigate();
     const neutralLight = theme.palette.neutral.light;
     cartitems.map((item) => priceList.push(Number(item.price)))
+    console.log(priceList);
     const totalPrice = priceList.reduce((a,b) => a+b, 0);
-    console.log(totalPrice);
     const cartData = cartitems.map((item) =>
     <Box display="flex" backgroundColor={theme.palette.mode === "light" ? "white" : "black"} border={theme.palette.mode === "light" ? "" : "1px solid #595959"} marginY={1.5} p="1rem" width={550}>
         <Typography style={{fontSize: "1rem"}} width={490}>

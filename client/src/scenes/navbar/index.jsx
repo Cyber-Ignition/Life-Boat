@@ -1,10 +1,11 @@
 import { useState, useCallback } from "react";
 import { Box, IconButton, InputBase, Typography, Select, MenuItem, FormControl, useTheme, useMediaQuery } from "@mui/material";
-import { Search, Message, DarkMode, LightMode, Notifications, Menu, Close } from "@mui/icons-material";
+import { Search, Message, DarkMode, LightMode, Notifications, Menu, Close, Science } from "@mui/icons-material";
 import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 import BloodtypeIcon from '@mui/icons-material/Bloodtype';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import LocalMallIcon from '@mui/icons-material/LocalMall';
+import ScienceIcon from '@mui/icons-material/Science';
 import Tooltip from '@mui/material/Tooltip';
 import Button from "@mui/material/Button";
 import InputLabel from "@mui/material/InputLabel";
@@ -45,6 +46,7 @@ const Navbar = () => {
             dose: result.products[0].dosage_form,
             route: result.products[0].route,
             sponsor: result.sponsor_name,
+            productid: result.products[0].product_number
           }
         }),
       }
@@ -129,6 +131,9 @@ const Navbar = () => {
                     </IconButton>
                     <IconButton onClick={() => navigate("/buy-medicines")}>
                         <Tooltip title="Buy Medicines"><LocalMallIcon sx={{ color: theme.palette.mode === "dark" ? "" : dark, fontSize: "25px" }} /></Tooltip>
+                    </IconButton>
+                    <IconButton onClick={() => navigate("/lab-tests")}>
+                        <Tooltip title="Lab Tests"><ScienceIcon sx={{ color: theme.palette.mode === "dark" ? "" : dark, fontSize: "25px" }} /></Tooltip>
                     </IconButton>
                     <IconButton onClick={() => navigate("/medicines-cart")}>
                         <Tooltip title="Medicines Cart"><ShoppingCartIcon sx={{ color: theme.palette.mode === "dark" ? "" : dark, fontSize: "25px" }} /></Tooltip>

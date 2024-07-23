@@ -37,6 +37,7 @@ const Medicine = () => {
   const drugDosage = _.startCase(name.dose.toLowerCase());
   const drugSponsor = _.startCase(name.sponsor.toLowerCase());
   const drugRoute = _.startCase(name.route.toLowerCase());
+  const drugId = Number(name.productid);
   const drugAddedtoCart = cartDrugs.includes(drugTitle)
 
   async function getWikiResponse(url, config) {
@@ -53,7 +54,6 @@ const Medicine = () => {
     };
       getWikiResponse(WIKI_URL, wikiConfig).then(result => {
       setDrugInfo(result.data.query.pages[2]?.extract || result.data.query.pages[1]?.extract || result.data.query.pages[0].extract);
-      setPrice(String(Math.floor(Math.random()*1000)));
     })
   }, []);
 
@@ -94,7 +94,7 @@ const Medicine = () => {
           <Typography display="flex" minWidth={1050} style={{ fontSize: "5rem" }}>
             {drugTitle}
             <Typography p={7.5} paddingBottom={0} paddingLeft={2} style={{fontSize: "1.375rem"}}>
-              {price}
+              {drugId}
             </Typography>
           </Typography>
         </Box>

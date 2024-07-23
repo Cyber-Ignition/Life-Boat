@@ -1,0 +1,14 @@
+@keyframes smooth-appear {
+    from {
+        bottom: -100%;
+    }
+    to {
+        bottom: 0px;
+    }
+}
+
+.footer--box {
+    left: 50%;
+    transform: translateX(-50%);
+    animation: smooth-appear 1s ease forwards;
+}

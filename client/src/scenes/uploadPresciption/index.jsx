@@ -1,9 +1,12 @@
+import React, { useEffect, useState } from 'react'
 import { Box, Typography, useTheme, useMediaQuery, IconButton, InputBase, Button } from '@mui/material';
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { Search } from '@mui/icons-material';
+import CheckIcon from '@mui/icons-material/Check';
+import { BorderColor, Search } from '@mui/icons-material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import React, { useState } from 'react'
+import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
+import CloseIcon from '@mui/icons-material/Close';
 import logo from "components/images/logo.png";
 import dlogo from "components/images/dlogo.png";
 import doctor from "components/images/doctor.png";
@@ -19,6 +22,14 @@ import { useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as yup from "yup";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
+import Tesseract from 'tesseract.js';
+import { BarLoader } from 'react-spinners';
+import drugsfda from "../../components/drugData/data/drugs.txt";
+import { useDispatch } from 'react-redux';
+import { setCartItem } from 'state';
+import "./presc.css";
+
+const _ = require('lodash');
 
 const initialValues = yup.object().shape({
     picture1: "",
@@ -33,22 +44,88 @@ const validationSchema = yup.object().shape({
     
 })
 
+const override = {
+    marginTop: "0.6rem",
+    marginLeft: "0.5rem"
+};
+
 const UploadPrescription = () => {
     const theme = useTheme();
     const neutralLight = theme.palette.neutral.light;
+    const dispatch = useDispatch();
     const dark = theme.palette.neutral.dark;
     const background = theme.palette.background.default;
     const primaryLight = theme.palette.primary.light;
     const alt = theme.palette.background.alt;
     const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
     const [picture, setPicture] = useState(null);
+    const [picturePath, setPicturePath] = useState(null);
+    const [imageText, setImageText] = useState(null);
+    const [errorMessage, setErrorMessage] = useState(null);
+    const [submitClicked, setSubmitClicked] = useState(false);
+    const [drugList, setDrugList] = useState(null);
+    const [drugsFromImage, setDrugsFromImage] = useState(null);
+    const [displayFooter, setDisplayFooter] = useState(false);
+    const [drugsAddedtoCart, setDrugsAddedToCart] = useState(false);
+    const drugListFinal = [];
+    const drugsDetected = [];
+
+    useEffect(() => {
+        fetch(drugsfda)
+        .then(r => r.text())
+        .then(text => setDrugList(text.split("\n")));
+    }, []);
+    if (drugList){
+        drugList.map((obj) => drugListFinal.push(obj.split("\r")[0].split(" ")[0]));
+    }
+    const handleImageUpload = async () => {
+        setSubmitClicked(true);
+        const formData = new FormData();
+        formData.append('file', picture);
+        formData.append('upload_preset', 'lifeboat-react-uploads-unsigned');
+        formData.append('apikey', process.env.CLOUDINARY_API_KEY);
+        const results = fetch("https://api.cloudinary.com/v1_1/dlnakx05c/image/upload", {
+            method: "POST",
+            body: formData
+        })
+        const response = results.then(res => res.json())
+        const res = response.then((object) => setPicturePath(object.secure_url))
+    }
+
+    const handleCancel = () => {
+        setSubmitClicked(false);
+        setImageText(null);
+        setPicturePath(null);
+        setPicture(null);
+    }
+
+    if (picturePath){
+        Tesseract.recognize(picturePath, 'eng').then(({ data: { text }}) => {
+            setImageText(text);
+        })
+    }
+
+    if (imageText){
+        const imageTextN = imageText.replaceAll(" ", "\n").replaceAll("'", "").replaceAll("1", "I");
+        const imageTextArr = imageTextN.split("\n");
+        imageTextArr.map((text) => drugListFinal.includes(text) && text !== "" ? drugsDetected.push(text) : null);
+    }
+    console.log(imageText);
+
+    const handleConfirmUpload = () => {
+        setDrugsAddedToCart(true);
+        drugsDetected.map((drug) => dispatch(setCartItem({name: _.startCase(_.toLower(drug)), price: "5"})));
+        setDisplayFooter(true);
+    }
+    
+
     const [IsFullScreen, setFullScreen] = useState(false);
     const navigate = useNavigate();
     const handleFormSubmit = async(values, onSubmitProps) => {
         console.log(values);
     };
     const handle = useFullScreenHandle();
-    console.log(handle);
+    console.log(drugsDetected);
     return (
 
         <Box>
@@ -110,6 +187,7 @@ const UploadPrescription = () => {
                         onDrop={(acceptedFiles) => {
                             setFieldValue("picture1", acceptedFiles[0])
                             setFieldValue("pictures", acceptedFiles[0])
+                            setPicture(acceptedFiles[0])
                         }}
                     >
                         {({ getRootProps, getInputProps }) => (
@@ -121,7 +199,7 @@ const UploadPrescription = () => {
                                 }}
                             >
                                 <input {...getInputProps()} />
-                                {values.picture1 ? (
+                                {values.picture1 && picture ? (
                                     <FlexBetween>
                                         <Typography>{values.picture1.name}</Typography>
                                         <EditOutlinedIcon/>
@@ -155,6 +233,7 @@ const UploadPrescription = () => {
                         onDrop={(acceptedFiles) => {
                             setFieldValue("picture2", acceptedFiles[0])
                             setFieldValue("pictures", acceptedFiles[0])
+                            setPicture(acceptedFiles[0])
                         }}
                     >
                         {({ getRootProps, getInputProps }) => (
@@ -166,7 +245,7 @@ const UploadPrescription = () => {
                                 }}
                             >
                                 <input {...getInputProps()} />
-                                {values.picture2 ? (
+                                {values.picture2 && picture ? (
                                     <FlexBetween>
                                         <Typography>{values.picture2.name}</Typography>
                                         <EditOutlinedIcon/>
@@ -193,10 +272,54 @@ const UploadPrescription = () => {
                     Please upload an image to proceed.
                 </Typography>
                 }
-                <Button
-                        type="submit"
+                {submitClicked ? Boolean(errors.pictures) ? setSubmitClicked(false) : null || Boolean(picturePath) || <Typography display="flex" marginLeft={2}>
+                    Uploading Image
+                    <BarLoader
+                        color="blue"
+                        loading={true}
+                        cssOverride={override}
+                        size={150}
+                        aria-label="Loading Spinner"
+                        data-testid="loader"
+                    />
+                    </Typography> : null}
+                {picturePath ? Boolean(imageText) || <Typography display="flex" marginLeft={2} marginBottom={2}>
+                    Extracting text from image
+                    <BarLoader
+                        color="blue"
+                        loading={true}
+                        cssOverride={override}
+                        size={150}
+                        aria-label="Loading Spinner"
+                        data-testid="loader"
+                    />
+                    </Typography> : null}
+                    {picturePath && <Box marginLeft="2rem" display="flex">
+                        <img src = {picturePath} width="200px"/>
+                        <Box display="flex" flexDirection="column">
+                        {drugsDetected.length > 0 && <Typography p={4} style={{fontSize: "1rem"}}>
+                            The following drugs were detected by our system:
+                            </Typography>
+                        }
+                        {drugsDetected.length > 0 && drugsDetected.map((item) => 
+                            <Box display="flex">
+                            <Typography minWidth={250} marginLeft="2rem" style={{color: theme.palette.mode === "dark" ? "#7dc0ff" : "#0084ff"}}>
+                                {item}
+                            </Typography>
+                            <Box>
+                            <CheckIcon/>
+                            </Box>
+                            </Box>
+                        )}
+                        </Box>
+                    </Box>}
+                    
+                {Boolean(picturePath) && <Button
+                        onClick={() => {
+                            drugsAddedtoCart ? setErrorMessage("This order has already been added") : handleConfirmUpload()
+                        }}
                         sx = {{
-                            m: "2rem 1rem",
+                            m: errorMessage ? "1rem" : "2rem 1rem",
                             p: "1rem",
                             backgroundColor: "#2c79f5",
                             color: theme.palette.background.alt,
@@ -205,7 +328,35 @@ const UploadPrescription = () => {
                                 color: theme.palette.mode === "dark" ? "#fff" : "#000"
                             }
                         }}
-                        >PROCEED</Button>
+                        >{drugsAddedtoCart ? "CONFIRMED" : "CONFIRM UPLOAD"}</Button>}
+                {Boolean(picturePath) || <Button
+                        onClick={handleImageUpload}
+                        sx = {{
+                            m: "2rem 1rem",
+                            p: "1rem",
+                            backgroundColor: "#2c79f5",
+                            color: "white",
+                            "&:hover": {
+                                backgroundColor: theme.palette.mode === "dark" ? "#001f91" : "#cfe2ff",
+                                color: theme.palette.mode === "dark" ? "#fff" : "#000"
+                            }
+                        }}
+                        >PROCEED</Button>}
+                        {errorMessage && <Typography marginLeft="1rem" style={{color: "#ff0000"}}>{errorMessage}</Typography>}
+                {picturePath && <Button
+                        onClick={handleCancel}
+                        sx = {{
+                            m: "0rem 1rem",
+                            p: "1rem",
+                            marginBottom: "2rem",
+                            backgroundColor: "#e60f00",
+                            color: theme.palette.background.alt,
+                            "&:hover": {
+                                backgroundColor: theme.palette.mode === "dark" ? "#910000" : "#ffbab5",
+                                color: theme.palette.mode === "dark" ? "#fff" : "#000"
+                            }
+                        }}
+                        >CANCEL</Button>}
                 </Box>
                 </form>
             )}
@@ -252,7 +403,36 @@ const UploadPrescription = () => {
                 </FullScreen>
                 </Box>
                 
-            </Box>
+    {displayFooter && <Box className="footer--box" display="flex" alignSelf="center" position="fixed" bottom="0" width="90%" backgroundColor={theme.palette.mode === "light" ? "white" : "black"}
+      border={theme.palette.mode === "light" ? "" : "1px solid #595959"} boxShadow= {theme.palette.mode === "light" ? "5px 10px 10px 5px #000" : "5px 10px 10px 10px #fff"}>
+        <ShoppingCartCheckoutIcon style={{ fontSize: "1.5rem", marginTop: "3.5rem", marginLeft: "2rem" }} />
+        <Typography m="2rem" p="1rem" width={850} style={{ fontWeight: "500", fontSize: "1rem" }}>
+          Detected drugs have been added to your cart successfully.
+          <CheckIcon style={{ fontSize: "1.5rem", marginLeft: "2rem", backgroundColor: theme.palette.mode === "dark" ? "#00c24d" : "#00e35b" }} />
+        </Typography>
+        <Button
+          onClick={() => navigate("/medicines-cart")}
+          sx={{
+            m: "2rem 2rem",
+            p: "1rem",
+            width: "180px",
+            alignSelf: "center",
+            fontSize: "1rem",
+            backgroundColor: "#2c79f5",
+            color: theme.palette.background.alt,
+            "&:hover": {
+              backgroundColor: theme.palette.mode === "dark" ? "#001f91" : "#cfe2ff",
+              color: theme.palette.mode === "dark" ? "#fff" : "#000"
+            }
+          }}
+        >
+          <Typography>
+            VIEW CART
+          </Typography>
+        </Button>
+        <CloseIcon onClick={() => setDisplayFooter(false)} style={{ cursor: "pointer" }} />
+      </Box>}
+    </Box>
             
     )
 }
