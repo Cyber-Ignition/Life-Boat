@@ -14,15 +14,24 @@ import glucose from "../../components/images/glucose.png";
 import heart from "../../components/images/heart.png";
 import liver from "../../components/images/liver.png";
 import thyroid from "../../components/images/thyroid.png";
+import bloodComponents from "./bloodComponents.txt";
+import hbA1c from "./hba1c.txt";
+import glucosefast from "./glucose.txt";
+import lipidprofile from "./lipidProfile.txt";
+import liverFunction from "./liverFunction.txt";
+import thyroidProfile from "./thyroidProfile.txt";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./slick.css";
+import { useDispatch } from 'react-redux';
+import { setTestData } from 'state';
 
 const LabTests = () => {
 
     const theme = useTheme();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const neutralLight = theme.palette.neutral.light;
 
     const settings = {
@@ -43,12 +52,12 @@ const LabTests = () => {
       }}/>
     };
 
-    const laboratoryTests = [{name: "Complete Blood Count", testnumber: "29", image: blood, path: "blood"},
-        {name: "HbA1c (Glycated Haemoglobin)", testnumber: "3", image: hba1c, path: "hba1c"},
-        {name: "Glucose, Fasting", testnumber: "1", image: glucose, path: "glucose"},
-        {name: "Lipid Profile", testnumber: "8", image: heart, path: "lipid"},
-        {name: "Liver Function Test", testnumber: "10", image: liver, path: "liver"},
-        {name: "Thyroid Profile (FT3, FT4, TSH)", testnumber: "4", image: thyroid, path: "thyroid"}
+    const laboratoryTests = [{name: "Complete Blood Count (CBC)", file: bloodComponents, button: "Complete Blood Count", query: "Complete_blood_count", testnumber: "29", image: blood, path: "blood"},
+        {name: "HbA1c (Glycated Hemoglobin)", file: hbA1c, button: "HbA1c, Glycated Hemoglobin", query: "Glycated_hemoglobin", testnumber: "3", image: hba1c, path: "hba1c"},
+        {name: "Glucose, Fasting", file: glucosefast, button: "Glucose, Fasting", query: "Glucose_test", testnumber: "1", image: glucose, path: "glucose"},
+        {name: "Lipid Profile", file: lipidprofile, button: "Lipid Profile", query: "Lipid_profile", testnumber: "8", image: heart, path: "lipid"},
+        {name: "Liver Function Test (LFT)", file: liverFunction, button: "Liver Function Test", query: "Liver_function_tests", testnumber: "10", image: liver, path: "liver"},
+        {name: "Thyroid Profile (FT3, FT4, TSH)", file: thyroidProfile, button: "Thyroid Profile", query: "Thyroid_function_tests", testnumber: "4", image: thyroid, path: "thyroid"}
     ]
 
   return (
@@ -82,7 +91,10 @@ const LabTests = () => {
                         </Typography>
                     </Box>
                     <Button
-                onClick={() => navigate(test.path)}
+                onClick={() => {
+                  dispatch(setTestData(test))
+                  navigate(test.path)
+                }}
                 sx={{
                   margin: "2rem",
                   marginTop: "1rem",

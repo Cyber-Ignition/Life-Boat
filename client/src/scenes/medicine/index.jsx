@@ -48,12 +48,12 @@ const Medicine = () => {
       const drugQueryHalf = name.label.split(" ")[0].toLowerCase();
       const drugQueryFull = name.label.split(" ").join("").toLowerCase();
       const drugQueryFullUnderscore = name.label.split(" ").join("_").toLowerCase();
-      const WIKI_URL = `https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exsentences=10&exlimit=3&exintro&titles=${drugQueryHalf}|${drugQueryFull}|${drugQueryFullUnderscore}&explaintext=1&format=json&formatversion=2&origin=*`
+      const WIKI_URL = `https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exsentences=10&exlimit=4&exintro&titles=${drugQueryHalf}|${drugQueryFull}|${drugQueryFullUnderscore}|${drugQueryHalf}_(medication)&explaintext=1&format=json&formatversion=2&origin=*`
       const wikiConfig = {
         timeout: 6500 * 6500
     };
       getWikiResponse(WIKI_URL, wikiConfig).then(result => {
-      setDrugInfo(result.data.query.pages[2]?.extract || result.data.query.pages[1]?.extract || result.data.query.pages[0].extract);
+      setDrugInfo(result.data.query.pages[2]?.extract || result.data.query.pages[1]?.extract || result.data.query.pages[0].extract || result.data.query.pages[0].extract);
     })
   }, []);
 

@@ -15,8 +15,7 @@ import { themeSettings } from "theme";
 import Medicine from "scenes/medicine";
 import MedicinesCart from "scenes/medicinesCart";
 import LabTests from "scenes/labTests";
-import BloodTest from "scenes/labTests/bloodTest";
-
+import Test from "scenes/labTests/Test";
 
 function App() {
   const mode = useSelector((state) => state.mode);
@@ -38,7 +37,7 @@ function App() {
           <Route path="/medicine" element={<Medicine/>} />
           <Route path="/medicines-cart" element={<MedicinesCart/>} />
           <Route path="/lab-tests" element={<LabTests/>} />
-          <Route path="/lab-tests/blood" element={<BloodTest/>} />
+          <Route path="/lab-tests/:id" element={<Test/>} />
         </Routes>
       </ThemeProvider>
       </BrowserRouter>
