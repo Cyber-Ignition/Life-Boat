@@ -3,7 +3,7 @@ import { Box, Typography, useTheme, useMediaQuery, IconButton, InputBase, Button
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import CheckIcon from '@mui/icons-material/Check';
-import { BorderColor, Search } from '@mui/icons-material';
+import { Search } from '@mui/icons-material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import CloseIcon from '@mui/icons-material/Close';
@@ -53,10 +53,6 @@ const UploadPrescription = () => {
     const theme = useTheme();
     const neutralLight = theme.palette.neutral.light;
     const dispatch = useDispatch();
-    const dark = theme.palette.neutral.dark;
-    const background = theme.palette.background.default;
-    const primaryLight = theme.palette.primary.light;
-    const alt = theme.palette.background.alt;
     const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
     const [picture, setPicture] = useState(null);
     const [picturePath, setPicturePath] = useState(null);
@@ -64,7 +60,6 @@ const UploadPrescription = () => {
     const [errorMessage, setErrorMessage] = useState(null);
     const [submitClicked, setSubmitClicked] = useState(false);
     const [drugList, setDrugList] = useState(null);
-    const [drugsFromImage, setDrugsFromImage] = useState(null);
     const [displayFooter, setDisplayFooter] = useState(false);
     const [drugsAddedtoCart, setDrugsAddedToCart] = useState(false);
     const drugListFinal = [];
@@ -89,7 +84,7 @@ const UploadPrescription = () => {
             body: formData
         })
         const response = results.then(res => res.json())
-        const res = response.then((object) => setPicturePath(object.secure_url))
+        response.then((object) => setPicturePath(object.secure_url))
     }
 
     const handleCancel = () => {
@@ -118,8 +113,6 @@ const UploadPrescription = () => {
         setDisplayFooter(true);
     }
     
-
-    const [IsFullScreen, setFullScreen] = useState(false);
     const navigate = useNavigate();
     const handleFormSubmit = async(values, onSubmitProps) => {
         console.log(values);
@@ -131,7 +124,7 @@ const UploadPrescription = () => {
         <Box>
                 <Box width="100%" backgroundColor= {theme.palette.background.alt} p="1rem 6%">
                     <FlexBetween>
-                        <img src={theme.palette.mode === "dark" ? dlogo : logo} width={170} onClick={() => navigate("/")} style={{cursor: "pointer"}}/>
+                        <img src={theme.palette.mode === "dark" ? dlogo : logo} alt="logo" width={170} onClick={() => navigate("/")} style={{cursor: "pointer"}}/>
                         <FlexBetween backgroundColor={neutralLight} padding="0.1rem 1.5rem">
                             <InputBase sx = {{
                                 width: "900px",
@@ -295,7 +288,7 @@ const UploadPrescription = () => {
                     />
                     </Typography> : null}
                     {picturePath && <Box marginLeft="2rem" display="flex" marginTop={2}>
-                        <img src = {picturePath} width="200px"/>
+                        <img src = {picturePath} alt="picture-path" width="200px"/>
                         <Box display="flex" flexDirection="column">
                         {drugsDetected.length > 0 && <Typography p={4} style={{fontSize: "1rem"}}>
                             The following drugs were detected by our system:
@@ -368,37 +361,37 @@ const UploadPrescription = () => {
                 <Box marginLeft="2rem">
                     <Typography p="1.5rem">Valid Prescription contains the following elements</Typography>
                     <Box display="flex" paddingBottom="1rem">
-                        <img src={doctor} width="50px" />
+                        <img src={doctor} alt="doctor" width="50px" />
                         <Typography p="1rem">- Doctor Details</Typography>
-                        <img src={date} width="50px" />
+                        <img src={date} alt="date" width="50px" />
                         <Typography p="1rem">- Date of Prescription</Typography>
                     </Box>
                     <Box display="flex" paddingBottom="1rem">
-                        <img src={patient} width="50px" />
+                        <img src={patient} alt="patient" width="50px" />
                         <Typography p="1rem">- Patient Details</Typography>
-                        <img src={sign} width="50px" />
+                        <img src={sign} alt="sign" width="50px" />
                         <Typography p="1rem">- Doctor's Signature</Typography>
                     </Box>
                     <Box display="flex" paddingBottom="1rem">
-                        <img src={medicine} width="50px" />
+                        <img src={medicine} alt="medicine" width="50px" />
                         <Typography p="1rem">- Medicine Details</Typography>
                     </Box>
                     <Box display="flex" paddingBottom="1rem">
-                        <img src={dosage} width="50px" />
+                        <img src={dosage} alt="dosage" width="50px" />
                         <Typography p="1rem">- Dosage Details</Typography>
                     </Box>
                 </Box>
                 <Box marginLeft="2rem">
                     <Typography p="1.5rem" textAlign="center">Valid Prescription Sample</Typography>
                     <Box>
-                        <img src={presctemp} width={300} onClick={handle.enter} style={{cursor: "pointer"}}/>
+                        <img src={presctemp} alt="prescription-sample" width={300} onClick={handle.enter} style={{cursor: "pointer"}}/>
                     </Box>
                 </Box>
                 </Box>
                 <Box display={handle.active ? "" : "none"}>
                 <FullScreen handle={handle}>
                     <Box height= "100%" alignItems="center">
-                        <img src={presctemp} height="100%" style={{ display: "block", marginLeft: "auto", marginRight: "auto"}}/>
+                        <img src={presctemp} alt="prescription-template" height="100%" style={{ display: "block", marginLeft: "auto", marginRight: "auto"}}/>
                     </Box>
                 </FullScreen>
                 </Box>

@@ -1,6 +1,6 @@
-import { useState, useCallback } from "react";
-import { Box, IconButton, InputBase, Typography, Select, MenuItem, FormControl, useTheme, useMediaQuery } from "@mui/material";
-import { Search, Message, DarkMode, LightMode, Notifications, Menu, Close, Science } from "@mui/icons-material";
+import { useState } from "react";
+import { Box, IconButton, Typography, Select, MenuItem, FormControl, useTheme, useMediaQuery } from "@mui/material";
+import { DarkMode, LightMode, Notifications, Menu, Close } from "@mui/icons-material";
 import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 import BloodtypeIcon from '@mui/icons-material/Bloodtype';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -20,7 +20,6 @@ import dlogo from "components/images/dlogo.png";
 const Navbar = () => {
     const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
     const [search, setSearch] = useState(null);
-    const [drugOptions, setDrugOptions] = useState([]);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const user = useSelector((state) => state.user);
@@ -30,7 +29,6 @@ const Navbar = () => {
     const neutralLight = theme.palette.neutral.light;
     const dark = theme.palette.neutral.dark;
     const background = theme.palette.background.default;
-    const primaryLight = theme.palette.primary.light;
     const alt = theme.palette.background.alt;
 
     const loadOptions = async (inputValue) => {
@@ -96,7 +94,7 @@ const Navbar = () => {
     return (
         <FlexBetween padding="0.75rem 3%" backgroundColor={alt}>
             <FlexBetween gap="1.75rem">
-                <img src={theme.palette.mode === "dark" ? dlogo : logo} width={140} onClick={() => navigate("/")} style={{cursor: "pointer"}}/>
+                <img src={theme.palette.mode === "dark" ? dlogo : logo} alt="lifeboat" width={140} onClick={() => navigate("/")} style={{cursor: "pointer"}}/>
                 {isNonMobileScreens && (
                     <Box>
                         <AsyncPaginate

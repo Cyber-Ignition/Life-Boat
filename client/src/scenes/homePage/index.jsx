@@ -1,12 +1,14 @@
 import Navbar from "scenes/navbar";
 import { Box, Typography } from "@mui/material";
-import FlexBetween from "components/FlexBetween";
 import Slider from 'react-slick';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from "react-router-dom";
 import doctor from "../../components/images/doctor-appointment.jpg";
 import labtest from "../../components/images/labtest.png";
 import buymeds from "../../components/images/buymeds.png";
 import bloodDonate from "../../components/images/bloodDonate.png";
+import healthcare from "../../components/images/healthcare.png";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -20,10 +22,24 @@ const HomePage = () => {
         slidesToScroll: 1,
         autoplay: true,
         autoplaySpeed: 3000,
-        cssEase: "linear"
+        cssEase: "linear",
+        nextArrow: <ArrowForwardIcon sx={{
+            "& .MuiSvgIcon-root": {
+              fill: null,
+          }
+          }}/>,
+          prevArrow: <ArrowBackIcon sx={{
+            "& .css-1nijkmi-MuiSvgIcon-root": {
+                fill: null
+            }
+          }}/>
       };
 
-    const slides = [{src: doctor}, {src: labtest}, {src: buymeds}, {src: bloodDonate}, {src: doctor}]
+    const slides = [{src: doctor, path: "medical-services"}, 
+        {src: labtest, path: "lab-tests"}, 
+        {src: buymeds, path: "buy-medicines"}, 
+        {src: bloodDonate, path: "blood-donation"}, 
+        {src: healthcare, path: "health"}]
     return (
         <Box>
             <Navbar/>
@@ -35,8 +51,8 @@ const HomePage = () => {
             <Box width="94%" margin="auto">
                 <Slider {...settings}>
                     {slides.map((images) => 
-                        <Box display="flex" margin={2} p={1}>
-                            <img src={images.src} width={400}/>
+                        <Box margin={2} p={1}>
+                            <img src={images.src} alt={images.path} width={400} style = {{cursor: "pointer"}} onClick={() => navigate(images.path)}/>
                         </Box>
                     )}
                 </Slider>

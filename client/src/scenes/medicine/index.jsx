@@ -23,7 +23,7 @@ const Medicine = () => {
   cartarr.map((obj) => cartDrugs.push(obj.name));
   const [displayFooter, setDisplayFooter] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
-  const [price, setPrice] = useState(null);
+  //const [price, setPrice] = useState(null);
 
   const dispatch = useDispatch();
   const theme = useTheme();
@@ -55,7 +55,7 @@ const Medicine = () => {
       getWikiResponse(WIKI_URL, wikiConfig).then(result => {
       setDrugInfo(result.data.query.pages[2]?.extract || result.data.query.pages[1]?.extract || result.data.query.pages[0].extract || result.data.query.pages[0].extract);
     })
-  }, []);
+  }, [name.label]);
 
   /*const url = `https://pricer.p.rapidapi.com/str?q=${drugBrand}`;
     const options = {
@@ -101,7 +101,7 @@ const Medicine = () => {
         <Box display="flex" flexDirection="column">
           <Button
             onClick={() => {
-              drugAddedtoCart ? setErrorMessage("This order has already been added") : dispatch(setCartItem({name: drugTitle, price: price}))
+              drugAddedtoCart ? setErrorMessage("This order has already been added") : dispatch(setCartItem({name: drugTitle, price: "5"}))
             }}
             sx={{
               marginTop: "2rem",

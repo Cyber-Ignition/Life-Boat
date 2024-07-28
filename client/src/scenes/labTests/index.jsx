@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, IconButton, useTheme, InputBase, Typography, Button, Slide } from '@mui/material';
+import { Box, IconButton, useTheme, InputBase, Typography, Button } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import FlexBetween from 'components/FlexBetween';
@@ -159,7 +159,7 @@ const LabTests = () => {
               </Button>
                 </Box>
                 <Box p={1} m={2} height={60}>
-                    <img src={test.image} width={40}/>
+                    <img src={test.image} alt="lab-test" width={40}/>
                 </Box>
             </Box>
           </Box>

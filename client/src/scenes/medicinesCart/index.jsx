@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Typography, Box, useTheme, Button, IconButton, InputBase } from '@mui/material';
 import { Search } from '@mui/icons-material';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -24,7 +24,7 @@ const MedicinesCart = () => {
     const neutralLight = theme.palette.neutral.light;
     cartitems.map((item) => priceList.push(Number(item.price)))
     console.log(priceList);
-    const totalPrice = priceList.reduce((a,b) => a+b, 0);
+    //const totalPrice = priceList.reduce((a,b) => a+b, 0);
     const cartData = cartitems.map((item) =>
     <Box display="flex" backgroundColor={theme.palette.mode === "light" ? "white" : "black"} border={theme.palette.mode === "light" ? "" : "1px solid #595959"} marginY={1.5} p="1rem" width={550}>
         <Typography style={{fontSize: "1rem"}} width={490}>
@@ -39,7 +39,7 @@ const MedicinesCart = () => {
     <Box>
         <Box width="100%" backgroundColor= {theme.palette.background.alt} p="1rem 6%">
                     <FlexBetween>
-                        <img src={theme.palette.mode === "dark" ? dlogo : logo} width={170} onClick={() => navigate("/")} style={{cursor: "pointer"}}/>
+                        <img src={theme.palette.mode === "dark" ? dlogo : logo} alt="lifeboat" width={170} onClick={() => navigate("/")} style={{cursor: "pointer"}}/>
                         <FlexBetween backgroundColor={neutralLight} padding="0.1rem 1.5rem">
                             <InputBase sx = {{
                                 width: "900px",
@@ -151,7 +151,7 @@ const MedicinesCart = () => {
     </Box>
     ) :
     (<Box display="flex" flexDirection="column" alignItems='center'>
-        <img src={cart} width={450}/>
+        <img src={cart} alt="cart" width={450}/>
         <Typography style={{fontSize: "2rem"}}>
             CART IS EMPTY AT THE MOMENT 
         </Typography>

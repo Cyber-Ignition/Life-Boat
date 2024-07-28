@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Accordion, AccordionItem, AccordionItemHeading, AccordionItemButton, AccordionItemPanel } from 'react-accessible-accordion';
 import { Box, IconButton, useTheme, InputBase, Typography, Button } from '@mui/material';
-import styled from 'styled-components';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
@@ -50,13 +49,13 @@ const Test = () => {
       getWikiResponse(WIKI_URL, wikiConfig).then(result => {
       setLabTestInfo(result.data.query.pages[0].extract);
     })
-  }, []);
+  }, [testData.query]);
 
   useEffect(() => {
       fetch(testData.file)
       .then(r => r.text())
       .then(text => setCompInfo(text.split("\n")));
-  }, []);
+  }, [testData.file]);
   console.log(CompInfo);
 
   const handleChange = () => {

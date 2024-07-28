@@ -1,5 +1,5 @@
 import { Box, Typography, useTheme, useMediaQuery } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 import logo from "components/images/logo.png";
 import dlogo from "components/images/dlogo.png";
 import Form from "./Form";
@@ -10,7 +10,7 @@ const LoginPage = () => {
     return (
         <Box>
             <Box width="100%" backgroundColor= {theme.palette.background.alt} p="1rem 6%">
-                <img src={theme.palette.mode === "dark" ? dlogo : logo} width={140} style={{cursor: "pointer", display: "Block", marginLeft: "auto", marginRight: "auto"}}/>
+                <img src={theme.palette.mode === "dark" ? dlogo : logo} alt="lifeboat" width={140} style={{cursor: "pointer", display: "Block", marginLeft: "auto", marginRight: "auto"}}/>
             </Box>
             <Box
             width={isNonMobileScreens ? "75%" : "95%"}
