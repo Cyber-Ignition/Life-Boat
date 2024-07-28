@@ -26,6 +26,7 @@
     "react-spinners": "^0.14.1",
     "redux-persist": "^6.0.0",
     "slick-carousel": "^1.8.1",
+    "styled-components": "^6.1.12",
     "tesseract.js": "^2.1.1",
     "web-vitals": "^2.1.4",
     "yup": "^1.4.0"

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Accordion, AccordionItem, AccordionItemHeading, AccordionItemButton, AccordionItemPanel } from 'react-accessible-accordion';
 import { Box, IconButton, useTheme, InputBase, Typography, Button } from '@mui/material';
+import styled from 'styled-components';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
@@ -84,7 +85,7 @@ const Test = () => {
         </FlexBetween>
       </Box>
       <Box display="flex" justifyContent="space-evenly" marginTop={1}>
-        <Box m={2} width="40%" bgcolor={theme.palette.mode === "dark" ? "black" : "white"} maxHeight={520} boxShadow= {theme.palette.mode === "dark" ? "5px 5px 10px 7px #fff" : "5px 5px 10px 1px #000"} borderRadius={2} sx={{borderTopRightRadius: "0", borderTopLeftRadius: "0"}}>
+        <Box m={2} width="40%" bgcolor={theme.palette.mode === "dark" ? "black" : "white"} height="fit-content" boxShadow= {theme.palette.mode === "dark" ? "5px 5px 10px 7px #363636" : "5px 5px 10px 1px #000"} borderRadius={2} sx={{borderTopRightRadius: "0", borderTopLeftRadius: "0"}}>
           <Box p={1} m={2} marginBottom={0}>
             <Typography style={{fontSize: "2rem"}}>
                 {testData.name}
@@ -135,7 +136,7 @@ const Test = () => {
             {errorMessage}
           </Typography>}
         </Box>
-        <Box display="flex" flexDirection="column" p={1} m={2} bgcolor={theme.palette.mode === "dark" ? "black" : "white"} width="50%" boxShadow={theme.palette.mode === "dark" ? "5px 5px 10px 7px #fff" : "5px 5px 10px 1px #000"}>
+        <Box display="flex" flexDirection="column" p={1} m={2} bgcolor={theme.palette.mode === "dark" ? "black" : "white"} width="50%" boxShadow={theme.palette.mode === "dark" ? "5px 5px 10px 7px #363636" : "5px 5px 10px 1px #000"}>
           <Box display="flex" flexDirection="row" marginRight="auto" marginLeft="auto">
               <BiotechIcon style={{fontSize: "3rem", marginTop: "1rem"}}/>
               <Typography mx={2} marginTop={2} style={{fontSize: "2rem"}}>
