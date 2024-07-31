@@ -19,6 +19,7 @@ import glucometer from "../../components/images/glucometer.png";
 import checkup from "../../components/images/checkup.png";
 import thermo from "../../components/images/thermo.png";
 import woman from "../../components/images/woman.png";
+import bone from "../../components/images/bone.png";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -52,7 +53,6 @@ const HomePage = () => {
         infinite: true,
         slidesToShow: 5,
         slidesToScroll: 1,
-        autoplay: true,
         autoplaySpeed: 3000,
         cssEase: "linear",
         nextArrow: <ArrowForwardIcon sx={{
@@ -74,10 +74,12 @@ const HomePage = () => {
         {src: healthcare, path: "health"}];
     
     const labtests = [{src: checkup, path: "medical-services"}, 
-        {src: glucometer, path: "lab-tests"}, 
+        {src: bone, path: "health"}, 
+        {src: glucometer, path: "lab-tests"},
         {src: fruits, path: "buy-medicines"}, 
         {src: thermo, path: "blood-donation"}, 
-        {src: woman, path: "health"}]
+        {src: woman, path: "health"}
+        ]
     
     const cartitems = useSelector((state) => state.cartitems);
     return (
@@ -118,7 +120,7 @@ const HomePage = () => {
             </Box>}
             <Box display="flex" marginTop={5} marginLeft={4} p={1}>
                 <Box display="flex" bgcolor={theme.palette.mode === "dark" ? "black" : "white"} border="1px solid #b5b5b5">
-                    <img src={prescription} height={135} style={{margin: "1rem"}}/>
+                    <img src={prescription} alt="prescription" height={135} style={{margin: "1rem"}}/>
                     <Box m={1} p={1}>
                         <Typography style={{fontSize: "1.2rem", fontWeight: "500"}}>Order with Prescription</Typography>
                         <Typography m={2} marginLeft={0}>Upload Prescription and we will deliver your medicines</Typography>
