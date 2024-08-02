@@ -92,7 +92,7 @@ const Navbar = () => {
     }
 
     return (
-        <FlexBetween padding="0.75rem 3%" backgroundColor={alt}>
+        <FlexBetween padding="0.75rem 3%" backgroundColor={alt} width="100%" position="fixed" top="0" zIndex={100}>
             <FlexBetween gap="1.75rem">
                 <img src={theme.palette.mode === "dark" ? dlogo : logo} alt="lifeboat" width={140} onClick={() => navigate("/")} style={{cursor: "pointer"}}/>
                 {isNonMobileScreens && (

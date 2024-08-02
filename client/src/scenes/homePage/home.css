@@ -1,0 +1,7 @@
+.labtest {
+    transition: all 0.4s;
+}
+
+.labtest:hover {
+    transform: scale(1.15);
+}

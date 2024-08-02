@@ -23,6 +23,7 @@ import bone from "../../components/images/bone.png";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import "./home.css";
 import { useDispatch, useSelector } from "react-redux";
 
 const HomePage = () => {
@@ -84,7 +85,7 @@ const HomePage = () => {
     return (
         <Box>
             <Navbar/>
-            <Box width="100%" p="1rem 6%">
+            <Box width="100%" p="1rem 6%" marginTop={10}>
                 <Typography textAlign="center" style = {{cursor: "pointer"}}onClick={() => navigate("/upload-prescription")}>
                     Order with prescription - UPLOAD NOW
                 </Typography>
@@ -174,7 +175,7 @@ const HomePage = () => {
                 <Box width="94%" margin="auto">
                 <Slider {...settingslab}>
                     {labtests.map((images) => 
-                        <Box margin={2} p={1}>
+                        <Box margin={2} p={1} className = "labtest">
                             <img src={images.src} alt={images.path} width={250} style = {{cursor: "pointer"}} onClick={() => navigate(images.path)}/>
                         </Box>
                     )}
