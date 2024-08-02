@@ -74,8 +74,11 @@ const UploadPrescription = () => {
         drugList.map((obj) => drugListFinal.push(obj.split("\r")[0].split(" ")[0]));
     }
     const handleImageUpload = async () => {
-        setSubmitClicked(true);
         const formData = new FormData();
+        if (picture)
+            setSubmitClicked(true);
+        else
+            setSubmitClicked("error");
         formData.append('file', picture);
         formData.append('upload_preset', 'lifeboat-react-uploads-unsigned');
         formData.append('apikey', process.env.CLOUDINARY_API_KEY);
@@ -260,12 +263,12 @@ const UploadPrescription = () => {
                 </Box>
                 
                 </FlexBetween>
-                {errors.pictures &&
+                {submitClicked === "error" && !values.pictures &&
                 <Typography color="#ff3333" marginLeft="1rem">
                     Please upload an image to proceed.
                 </Typography>
                 }
-                {submitClicked ? Boolean(errors.pictures) ? setSubmitClicked(false) : null || Boolean(picturePath) || <Typography display="flex" marginLeft={2} marginTop={2}>
+                {submitClicked === true && values.pictures ? Boolean(errors.pictures) && Boolean(values.pictures) ? setSubmitClicked(false) : null || Boolean(picturePath) || <Typography display="flex" marginLeft={2} marginTop={2}>
                     Uploading Image
                     <BarLoader
                         color="blue"

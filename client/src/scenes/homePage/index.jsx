@@ -53,7 +53,6 @@ const HomePage = () => {
         infinite: true,
         slidesToShow: 5,
         slidesToScroll: 1,
-        autoplaySpeed: 3000,
         cssEase: "linear",
         nextArrow: <ArrowForwardIcon sx={{
             "& .MuiSvgIcon-root": {
