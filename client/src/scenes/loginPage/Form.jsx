@@ -48,7 +48,7 @@ const Form = () => {
 
     const register = async (values, onSubmitProps) => {
         const savedUserResponse = await fetch(
-            "http://localhost:3001/auth/register",
+            "http://localhost:5001/auth/register",
             {
                 method: "POST",
                 headers: { "Content-type" : "application/json"},
