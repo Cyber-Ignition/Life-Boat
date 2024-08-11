@@ -65,7 +65,7 @@ const Form = () => {
 
     const login = async (values, onSubmitProps) => {
         const loggedInResponse = await fetch(
-            "http://localhost:3001/auth/login",
+            "http://localhost:5001/auth/login",
             {
                 method: "POST",
                 headers: { "Content-type" : "application/json"},
