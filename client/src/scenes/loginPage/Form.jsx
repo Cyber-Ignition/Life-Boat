@@ -36,6 +36,8 @@ const initialValuesLogin = {
     password: "",
 }
 
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+
 const Form = () => { 
     const [pageType, setPageType] = useState("login");
     const { palette } = useTheme();
@@ -48,7 +50,7 @@ const Form = () => {
 
     const register = async (values, onSubmitProps) => {
         const savedUserResponse = await fetch(
-            "http://localhost:5001/auth/register",
+            `${BACKEND_URL}/auth/register`,
             {
                 method: "POST",
                 headers: { "Content-type" : "application/json"},
@@ -65,7 +67,7 @@ const Form = () => {
 
     const login = async (values, onSubmitProps) => {
         const loggedInResponse = await fetch(
-            "http://localhost:5001/auth/login",
+            `${BACKEND_URL}/auth/login`,
             {
                 method: "POST",
                 headers: { "Content-type" : "application/json"},

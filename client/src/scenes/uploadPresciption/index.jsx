@@ -81,7 +81,7 @@ const UploadPrescription = () => {
             setSubmitClicked("error");
         formData.append('file', picture);
         formData.append('upload_preset', 'lifeboat-react-uploads-unsigned');
-        formData.append('apikey', process.env.CLOUDINARY_API_KEY);
+        formData.append('apikey', process.env.REACT_APP_CLOUDINARY_API_KEY);
         const results = fetch("https://api.cloudinary.com/v1_1/dlnakx05c/image/upload", {
             method: "POST",
             body: formData
